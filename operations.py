@@ -25,10 +25,17 @@ def authenticate_user(email: str, password: str, user_collection):
 
 
 def Link_id(username: str, linked_id: str, linked_id_collection):
-    linked_id_collection.insert_one(
-        {"username": username, "linked_id": linked_id})
+    linked_id_collection.insert_one({"username": username, "linked_id": linked_id})
 
 
 def delete_user(username: str, user_collection, linked_id_collection):
-    user_collection.delete_one({"username": username})
-    linked_id_collection.delete_many({"username": username})
+    user = user_collection.find_one({"username": username})
+    if not user:
+        return None, "User not found"
+    # Delete user from the user cluster
+    user_collection.delete_one({"_id": user["_id"]})
+
+    # Delete associated linked IDs
+    linked_id_collection.delete_many({"user_id": user["_id"]})
+
+    return True, "User and associated data deleted successfully"
