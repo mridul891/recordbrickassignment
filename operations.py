@@ -24,11 +24,11 @@ def authenticate_user(email: str, password: str, user_collection):
     return None
 
 
-def Link_id(user_id: str, linked_id: str, linked_id_collection):
+def Link_id(username: str, linked_id: str, linked_id_collection):
     linked_id_collection.insert_one(
-        {"user_id": user_id, "linked_id": linked_id})
+        {"username": username, "linked_id": linked_id})
 
 
-def delete_user(user_id: str, user_collection, linked_id_collection):
-    user_collection.delete_one({"id": user_id})
-    linked_id_collection.delete_many({"id": user_id})
+def delete_user(username: str, user_collection, linked_id_collection):
+    user_collection.delete_one({"username": username})
+    linked_id_collection.delete_many({"username": username})

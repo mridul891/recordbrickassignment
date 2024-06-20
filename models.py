@@ -17,5 +17,5 @@ class Login(BaseModel):
 
 
 class LinkID(BaseModel):
-    user_id: str
+    username: str
     linked_id: str
